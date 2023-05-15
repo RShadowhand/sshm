@@ -1,0 +1,23 @@
+#!/bin/sh
+SSHM=/usr/bin/sshm;
+SSH=$(which ssh);
+MOD_CMDS=("add", "del");
+HELP_CMDS=("help", "list");
+TARGET=$($SSHM $1);
+SUCCESS=$?;
+if [ -z $1 ];
+  then echo "$TARGET";
+  exit 0;
+fi
+if echo "${MOD_CMDS[@]}" | grep -qw "$1";
+  then echo "SSHM - To add or delete targets, please use sshm instead.";
+  exit 0;
+fi;
+if echo "${HELP_CMDS[@]}" | grep -qw "$1";
+  then echo "$TARGET";
+  exit 0;
+fi;
+if [ "$SUCCESS" = 1 ];
+  then echo "$TARGET";
+  else $SSH $($SSHM $1);
+fi 
